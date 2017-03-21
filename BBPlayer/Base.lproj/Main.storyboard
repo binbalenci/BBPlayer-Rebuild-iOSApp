@@ -26,7 +26,7 @@
                                 <rect key="frame" x="-4" y="3" width="383" height="661"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="songCell" rowHeight="83" id="x3v-3E-COy" customClass="MyCustomTableViewCell" customModule="BBPlayer" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SongCell" rowHeight="83" id="x3v-3E-COy" customClass="MyCustomTableViewCell" customModule="BBPlayer" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="383" height="83"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x3v-3E-COy" id="hje-bj-AiL">
@@ -206,10 +206,10 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="coverImage" destination="RNA-z4-Nez" id="VGz-aF-A8W"/>
                         <outlet property="sliderValue" destination="q7c-xh-c4q" id="35p-Xk-s68"/>
                         <outlet property="songArtist" destination="3NR-5Y-XiD" id="NBF-fg-m40"/>
                         <outlet property="songDescription" destination="WNU-Qy-GJb" id="Uyu-ME-5Yv"/>
+                        <outlet property="songImage" destination="RNA-z4-Nez" id="97D-ZW-X1O"/>
                         <outlet property="songTitle" destination="I5a-mz-fhn" id="IOA-a6-iek"/>
                         <outlet property="toolBar" destination="gC2-Nk-LaF" id="hZ3-ZE-fcR"/>
                     </connections>

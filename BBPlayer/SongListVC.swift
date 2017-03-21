@@ -13,8 +13,8 @@ import AVFoundation
  Global Variable: coverArray and songArray
  Make an array of URL for the cover images and songs
  */
-let coverArray = Bundle.main.urls(forResourcesWithExtension: "jpg", subdirectory: "cover")!
-let songArray = Bundle.main.urls(forResourcesWithExtension: "mp3", subdirectory: "song")!
+let coverUrlArray = Bundle.main.urls(forResourcesWithExtension: "jpg", subdirectory: "cover")!
+let songUrlArray = Bundle.main.urls(forResourcesWithExtension: "mp3", subdirectory: "song")!
 
 class SongListVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -23,57 +23,7 @@ class SongListVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var songTitleList = [String]()
     var songArtistList = [String]()
     var randomNumberArray = [Int]()
-    
-    /*
-     Function getTitleAndArtist()
-     Run through each URL in songArray and append the
-     artist and title to the array, if artist or
-     title does not present, it will append "No
-     Artist Found"
-     */
-    func getTitleAndArtist() {
-        for song in songArray {
-            var hasArtist = false
-            var hasTitle = false
-            let playerItem = AVPlayerItem(url: song)
-            let metadataList = playerItem.asset.commonMetadata
-            for item in metadataList {
-                if item.commonKey != nil && item.value != nil {
-                    if item.commonKey == "title" {
-                        songTitleList.append(item.stringValue!)
-                        hasTitle = true
-                    }
-                    
-                    if item.commonKey == "artist" {
-                        songArtistList.append(item.stringValue!)
-                        hasArtist = true
-                    }
-                }
-            }
-            
-            if hasArtist == false {
-                songArtistList.append("No Artist Found")
-            }
-            
-            if hasTitle == false {
-                songTitleList.append("No Title Found")
-            }
-            
-        }
-    }
-    
-    /*
-     Function generateRandomNumber()
-     Generate a random number for a random cover image
-     */
-    func generateRandomNumber() {
-        let coverArrayCount = UInt32(coverArray.count)
-        
-        for _ in 0...songArray.count {
-            let randomNumber = Int(arc4random_uniform(coverArrayCount)) + 1
-            randomNumberArray.append(randomNumber)
-        }
-    }
+    var songs = [Song]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,14 +32,45 @@ class SongListVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        getTitleAndArtist()
-        generateRandomNumber()
-        
-    }
+        appendSongData()
+     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    // MARK: Supporting functions
+    /*
+     Run through each URL in songArray and append the artist and title to the array, 
+     if artist or title does not present, it will append "No Artist Found"
+     */
+    func appendSongData() {
+        for song in songUrlArray {
+            var tempTitle = ""
+            var tempArtist = ""
+            var tempImage = ""
+            
+            let playerItem = AVPlayerItem(url: song)
+            let metadataList = playerItem.asset.commonMetadata
+            for item in metadataList {
+                if item.commonKey != nil && item.value != nil {
+                    if item.commonKey == "title" {
+                        tempTitle = item.stringValue!
+                    }
+                    
+                    if item.commonKey == "artist" {
+                        tempArtist = item.stringValue!
+                    }
+                }
+             
+                let coverArrayCount = UInt32(coverUrlArray.count)
+                
+                for _ in 0...songUrlArray.count {
+                    let randomNumber = Int(arc4random_uniform(coverArrayCount)) + 1
+                    tempImage = "cover/cover\(randomNumber).jpg"
+                }
+                
+                let song = Song(songTitle: tempTitle, songArtist: tempArtist, songImage: tempImage)
+                songs.append(song)
+            }
+            
+        }
     }
     
     // MARK:  UITextFieldDelegate Methods
@@ -98,55 +79,42 @@ class SongListVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return songArray.count
+        return songs.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        //let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! MyCustomTableViewCell
-        
-        //Suggest that the song can be clickable
-        cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
-        
-        let row = indexPath.row
-        
-        let randomNumber = randomNumberArray[row]
-        
-        cell.songTitle.text = songTitleList[row]
-        
-        cell.songArtist.text = songArtistList[row]
-        
-        cell.songImage.image = UIImage(named: "cover/cover\(randomNumber).jpg")
-        
-        return cell
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "SongCell", for: indexPath) as? SongCell {
+            
+            //Suggest that the song can be clickable
+            cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+            
+            let currentSong = songs[indexPath.row]
+            
+            cell.updateUI(song: currentSong)
+            
+            return cell
+        } else {
+            return UITableViewCell()
+        }
     }
     
     // MARK:  UITableViewDelegate Methods
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        //tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        let song = songs[indexPath.row]
         
-        self.performSegue(withIdentifier: "showMediaPlayer", sender: tableView)
+        self.performSegue(withIdentifier: "showMediaPlayer", sender: song)
     }
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showMediaPlayer" {
+        
+        if let destination = segue.destination as? MediaPlayerVC {
             
-            let VC = segue.destination as! MediaPlayerVC
-            
-            let indexPath: IndexPath = tableView.indexPathForSelectedRow!
-            
-            /*
-             parsing necessary variable and data for
-             ther other ViewController
-             */
-            VC.audioURL = songArray[indexPath.row]
-            VC.parsedSongTitle = songTitleList[indexPath.row]
-            VC.parsedSongArtist = songArtistList[indexPath.row]
-            VC.parsedRandomNumber = randomNumberArray[indexPath.row]
+            if let song = sender as? Song {
+                destination.song = song
+            }
             
         }
     }
@@ -155,18 +123,5 @@ class SongListVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         //Reload Data when rotating
         self.tableView.reloadData()
     }
-}
-
-/*
- class MyCustomTableViewCell
- A subclass to hold the outlet of the cell
- */
-class MyCustomTableViewCell: UITableViewCell {
-    
-    @IBOutlet var songTitle: UILabel!
-    
-    @IBOutlet var songArtist: UILabel!
-    
-    @IBOutlet var songImage: UIImageView!
     
 }

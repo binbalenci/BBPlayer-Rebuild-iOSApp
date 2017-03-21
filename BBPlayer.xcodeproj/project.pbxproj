@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		67657F901E81BB9400700D83 /* SongCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67657F8F1E81BB9400700D83 /* SongCell.swift */; };
 		676CCAC11E77283A00D7EAC0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676CCAC01E77283A00D7EAC0 /* AppDelegate.swift */; };
 		676CCAC31E77283A00D7EAC0 /* SongListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676CCAC21E77283A00D7EAC0 /* SongListVC.swift */; };
 		676CCAC61E77283A00D7EAC0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 676CCAC41E77283A00D7EAC0 /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		67657F8F1E81BB9400700D83 /* SongCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongCell.swift; sourceTree = "<group>"; };
 		676CCABD1E77283A00D7EAC0 /* BBPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BBPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		676CCAC01E77283A00D7EAC0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		676CCAC21E77283A00D7EAC0 /* SongListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongListVC.swift; sourceTree = "<group>"; };
@@ -68,8 +70,8 @@
 			children = (
 				676CCAD51E77285500D7EAC0 /* Supporting Files */,
 				676CCAD41E77284D00D7EAC0 /* Model */,
-				676CCAD21E77284200D7EAC0 /* Controller */,
 				676CCAD31E77284900D7EAC0 /* View */,
+				676CCAD21E77284200D7EAC0 /* Controller */,
 				676CCAC71E77283A00D7EAC0 /* Assets.xcassets */,
 			);
 			path = BBPlayer;
@@ -87,6 +89,7 @@
 		676CCAD31E77284900D7EAC0 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				67657F8F1E81BB9400700D83 /* SongCell.swift */,
 				676CCAC41E77283A00D7EAC0 /* Main.storyboard */,
 				676CCAC91E77283A00D7EAC0 /* LaunchScreen.storyboard */,
 			);
@@ -198,6 +201,7 @@
 				676CCAE21E77423000D7EAC0 /* Song.swift in Sources */,
 				676CCAC31E77283A00D7EAC0 /* SongListVC.swift in Sources */,
 				676CCAC11E77283A00D7EAC0 /* AppDelegate.swift in Sources */,
+				67657F901E81BB9400700D83 /* SongCell.swift in Sources */,
 				676CCADC1E77365000D7EAC0 /* MediaPlayerVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -370,6 +374,7 @@
 				676CCAD11E77283A00D7EAC0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

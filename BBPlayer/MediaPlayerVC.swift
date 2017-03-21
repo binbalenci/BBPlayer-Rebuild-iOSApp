@@ -11,19 +11,26 @@ import AVFoundation
 
 class MediaPlayerVC: UIViewController {
     
-    var player:AVAudioPlayer = AVAudioPlayer()
-    var audioURL: URL?
-    var parsedSongTitle: String?
-    var parsedSongArtist: String?
-    var parsedRandomNumber: Int?
-    var playing = true
-
     @IBOutlet weak var toolBar: UIToolbar!
-    @IBOutlet var coverImage: UIImageView!
+    @IBOutlet var songImage: UIImageView!
     @IBOutlet var songTitle: UILabel!
     @IBOutlet var songArtist: UILabel!
     @IBOutlet var songDescription: UILabel!
     @IBOutlet weak var sliderValue: UISlider!
+    
+    var player:AVAudioPlayer = AVAudioPlayer()
+    var audioURL: URL?
+    var playing = true
+    
+    private var _song: Song!
+    
+    var song: Song {
+        get {
+            return _song
+        } set {
+            _song = newValue
+        }
+    }
     
     //Change the volume according the the slider value
     @IBAction func sliderMoved(_ sender: AnyObject) {
@@ -66,11 +73,9 @@ class MediaPlayerVC: UIViewController {
      based on the parsed data from the navigation controller
     */
     func songInfo() {
-        songTitle.text = parsedSongTitle
-        songArtist.text = parsedSongArtist
-        //songDescription.text = Lorem.sentences(3)
-        coverImage.image = UIImage(named: "cover/cover\(parsedRandomNumber!).jpg")
-        //songDescription.text = Lorem.sentences(3)
+        songTitle.text = song.songTitle
+        songArtist.text = song.songArtist
+        songImage.image = UIImage(named: song.songImage)
 
     }
     
